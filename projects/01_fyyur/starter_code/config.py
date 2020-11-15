@@ -11,3 +11,6 @@ DEBUG = True
 
 # DATABASE URL
 SQLALCHEMY_DATABASE_URI = 'postgres://lukas@localhost:5432/fyyur'
+
+#Remove annoying error message
+SQLALCHEMY_TRACK_MODIFICATIONS = False
