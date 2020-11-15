@@ -41,7 +41,6 @@ class Venue(db.Model):
 
     def __repr__(self):
       return f'<Venue {self.id} name: {self.name}>'
-    # TODO: implement any missing fields, as a database migration using Flask-Migrate
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
