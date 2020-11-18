@@ -15,6 +15,7 @@ from flask_wtf import Form
 from forms import *
 from config import *
 from models import *
+import datetime
 
 #----------------------------------------------------------------------------#
 # Filters.
@@ -57,8 +58,6 @@ def venues():
 
       venues = []
       for venue in venuesQuery:
-        #current_date=datetime.now()
-        #num_upcoming_shows = Show.query.filter_by(venue_id=venue.id).count()
         venues.append({
           "id": venue.id,
           "name": venue.name
@@ -103,6 +102,7 @@ def show_venue(venue_id):
   # shows the venue page with the given venue_id
   # TODO: replace past shows and upcoming with real show data from the show table
   venue = Venue.query.filter_by(id=venue_id).all()[0]
+
   data={
     "id": venue.id,
     "name": venue.name,
@@ -116,15 +116,23 @@ def show_venue(venue_id):
     "seeking_talent": venue.seeking_talent,
     "seeking_description": venue.seeking_description,
     "image_link": venue.image_link,
-    # "past_shows": [{
-    #   "artist_id": 4,
-    #   "artist_name": "Guns N Petals",
-    #   "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
-    #   "start_time": "2019-05-21T21:30:00.000Z"
-    # }],
     "past_shows": [],
     "upcoming_shows": []
   }
+
+  shows = db.session.query(Show, Artist).filter_by(venue_id=venue_id).join(Artist).all()
+
+  for (show, artist) in shows:
+    if(show.start_time<datetime.datetime.now()):
+      add_to="past_shows"
+    else:
+      add_to="upcoming_shows"
+    data[add_to].append({
+      "artist_id": artist.id,
+      "artist_name": artist.name,
+      "artist_image_link": artist.image_link,
+      "start_time": show.start_time.strftime("%m/%d/%Y, %H:%M:%S")
+    })
 
   data["past_shows_count"]=len(data["past_shows"])
   data["upcoming_shows_count"]=len(data["upcoming_shows"])
@@ -230,18 +238,27 @@ def show_artist(artist_id):
     "seeking_venue": artist.seeking_venue,
     "seeking_description": artist.seeking_description,
     "image_link": artist.image_link,
-    # "past_shows": [{
-    #   "artist_id": 4,
-    #   "artist_name": "Guns N Petals",
-    #   "artist_image_link": "https://images.unsplash.com/photo-1549213783-8284d0336c4f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=300&q=80",
-    #   "start_time": "2019-05-21T21:30:00.000Z"
-    # }],
     "past_shows": [],
     "upcoming_shows": []
   }
 
+  shows = db.session.query(Show, Venue).filter_by(artist_id=artist_id).join(Venue).all()
+
+  for (show, venue) in shows:
+    if(show.start_time<datetime.datetime.now()):
+      add_to="past_shows"
+    else:
+      add_to="upcoming_shows"
+    data[add_to].append({
+      "venue_id": venue.id,
+      "venue_name": venue.name,
+      "venue_image_link": venue.image_link,
+      "start_time": show.start_time.strftime("%m/%d/%Y, %H:%M:%S")
+    })
+
   data["past_shows_count"]=len(data["past_shows"])
   data["upcoming_shows_count"]=len(data["upcoming_shows"])
+
   return render_template('pages/show_artist.html', artist=data)
 
 @app.route('/artists/<artist_id>', methods=['DELETE'])
