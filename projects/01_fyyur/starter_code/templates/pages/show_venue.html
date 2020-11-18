@@ -5,9 +5,15 @@
 	<div class="col-sm-6">
 		<h1 class="monospace">
 			{{ venue.name }}
+			<a href="/venues/{{venue.id}}/edit">
+				<span class="glyphicon glyphicon-pencil"></span>
+			</a>
 		</h1>
 		<p class="subtitle">
 			ID: {{ venue.id }}
+			<a href="#" onclick="deleteData('/venues/{{venue.id}}')">
+				Delete
+			</a>
 		</p>
 		<div class="genres">
 			{% for genre in venue.genres %}
@@ -74,6 +80,7 @@
 		{% endfor %}
 	</div>
 </section>
+
 
 {% endblock %}
 

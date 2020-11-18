@@ -5,9 +5,15 @@
 	<div class="col-sm-6">
 		<h1 class="monospace">
 			{{ artist.name }}
+			<a href="/artists/{{artist.id}}/edit">
+				<span class="glyphicon glyphicon-pencil "></span>
+			</a>
 		</h1>
 		<p class="subtitle">
-			ID: {{ artist.id }}
+			ID: {{ artist.id }} -
+			<a href="#" onclick="deleteData('/artists/{{artist.id}}')">
+				Delete
+			</a>
 		</p>
 		<div class="genres">
 			{% for genre in artist.genres %}

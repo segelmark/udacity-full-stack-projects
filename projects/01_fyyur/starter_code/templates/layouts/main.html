@@ -31,6 +31,22 @@
 <script src="/static/js/libs/modernizr-2.8.2.min.js"></script>
 <script src="/static/js/libs/moment.min.js"></script>
 <script type="text/javascript" src="/static/js/script.js" defer></script>
+<script>
+  function deleteData(url) {
+    var r = confirm("Are you sure?");
+    if (r == true) {
+      fetch(url, {
+        method: 'delete'
+      })
+      .then(response => response.json())
+      .then(window.location.replace("/"));
+      return false;
+    }
+    else {
+      return false;
+    }
+  }
+</script>
 <!--[if lt IE 9]><script src="/static/js/libs/respond-1.4.2.min.js"></script><![endif]-->
 <!-- /scripts -->
 </head>
