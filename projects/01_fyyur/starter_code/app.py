@@ -100,8 +100,7 @@ def search_venues():
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
-  # TODO: replace past shows and upcoming with real show data from the show table
-  venue = Venue.query.filter_by(id=venue_id).all()[0]
+git  venue = Venue.query.filter_by(id=venue_id).all()[0]
 
   data={
     "id": venue.id,
