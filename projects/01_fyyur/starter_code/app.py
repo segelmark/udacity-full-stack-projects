@@ -77,10 +77,12 @@ def venues():
 @app.route('/venues/search', methods=['POST'])
 def search_venues():
   data = []
+  city = request.form.get('city', '')
+  state = request.form.get('state', '')
   try:
     search_term = request.form.get('search_term', '')
 
-    search = Venue.query.filter(Venue.name.ilike(f'%{search_term}%')).all()
+    search = Venue.query.filter(Venue.name.ilike(f'%{search_term}%')).filter(Venue.city.ilike(f'%{city}%')).filter(Venue.state.ilike(f'%{state}%')).all()
 
     for venue in search:
       data.append({
@@ -92,6 +94,8 @@ def search_venues():
       "count": len(data),
       "data": data
     }
+    cities = Venue.query.distinct(Venue.city).all()
+    states = Venue.query.distinct(Venue.state).all()
     return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
   except:
     flash('An error occurred while searching')
@@ -100,7 +104,7 @@ def search_venues():
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   # shows the venue page with the given venue_id
-git  venue = Venue.query.filter_by(id=venue_id).all()[0]
+  venue = Venue.query.filter_by(id=venue_id).all()[0]
 
   data={
     "id": venue.id,
@@ -219,7 +223,7 @@ def search_artists():
     return render_template('pages/search_artists.html', results=response, search_term=request.form.get('search_term', ''))
   except:
     flash('An error occurred while searching')
-    return redirect(url_for('venues'))
+    return redirect(url_for('artists'))
 
 
 @app.route('/artists/<int:artist_id>')
@@ -450,6 +454,10 @@ def shows():
 def create_shows():
   # renders form. do not touch.
   form = ShowForm()
+  venues = Venue.query.all()
+  for venue in venues: form.venue_id.choices.append((venue.id, venue.name))
+  artists = Artist.query.all()
+  for artist in artists: form.artist_id.choices.append((artist.id, artist.name))
   return render_template('forms/new_show.html', form=form)
 
 @app.route('/shows/create', methods=['POST'])
