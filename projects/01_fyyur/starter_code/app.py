@@ -472,10 +472,20 @@ def shows():
 
 @app.route('/shows/create')
 def create_shows():
-  # renders form. do not touch.
+  # Renders form
   form = ShowForm()
-  venues = Venue.query.all()
+  venues = Venue.query.filter_by(seeking_talent=True).all()
   for venue in venues: form.venue_id.choices.append((venue.id, venue.name))
+  artists = Artist.query.filter_by(seeking_venue=True).all()
+  for artist in artists: form.artist_id.choices.append((artist.id, artist.name))
+  return render_template('forms/new_show.html', form=form)
+
+@app.route('/shows/create/<int:venue_id>')
+def create_shows_at_venue(venue_id):
+  # Renders form
+  form = ShowForm()
+  venue = Venue.query.filter_by(id=venue_id).all()[0]
+  form.venue_id.choices.append((venue.id, venue.name))
   artists = Artist.query.all()
   for artist in artists: form.artist_id.choices.append((artist.id, artist.name))
   return render_template('forms/new_show.html', form=form)

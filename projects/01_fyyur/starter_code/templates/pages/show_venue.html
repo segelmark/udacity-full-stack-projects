@@ -10,7 +10,7 @@
 			</a>
 		</h1>
 		<p class="subtitle">
-			ID: {{ venue.id }}
+			ID: {{ venue.id }} - 
 			<a href="#" onclick="deleteData('/venues/{{venue.id}}')">
 				Delete
 			</a>
@@ -41,7 +41,11 @@
 			<div class="description">
 				<i class="fas fa-quote-left"></i> {{ venue.seeking_description }} <i class="fas fa-quote-right"></i>
 			</div>
+			<div style="text-align: center;">
+				<h4><a href="/shows/create/{{ venue.id }}"><i class="fas fa-calendar-plus"> </i> Book now </a></h4>
+			</div>
 		</div>
+
 		{% else %}	
 		<p class="not-seeking">
 			<i class="fas fa-moon"></i> Not currently seeking talent
