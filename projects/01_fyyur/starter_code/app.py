@@ -212,7 +212,7 @@ def delete_venue(venue_id):
 @app.route('/artists')
 def artists():
   data=[]
-  artists = Artist.query.all()
+  artists = Artist.query.order_by(Artist.name.asc()).all()
   for artist in artists:
     data.append({
       "id": artist.id,

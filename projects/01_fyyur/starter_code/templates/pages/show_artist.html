@@ -50,6 +50,88 @@
 	</div>
 	<div class="col-sm-6">
 		<img src="{{ artist.image_link }}" alt="Venue Image" />
+		<h3>Some of our hits</h3>
+		<!-- Shows top two songs from iTunes - Added for fun - based on https://github.com/cfjedimaster/vue-demos -->
+		<div id="app" v-cloak>
+			<b-container >
+				<b-row v-if="searching">
+					<b-col sm="6">
+						<i>Searching...</i>
+					</b-col>
+				</b-row>
+
+				<b-row>
+					<b-col sm="3" class="my-3" v-for="result in results" class="result">
+						<b-card :title="result.trackName"
+						class="h-100"
+						img-top
+						:img-src="result.artworkUrl100">
+							<b-card-text>
+							From [[ result.artistName ]], released on [[result.releaseDate | formatDate]].
+							</b-card-text>
+							<b-button @click="play(result.previewUrl)" variant="dark">&#9658; Play Sample</b-button>
+						</b-card>
+					</b-col>
+				</b-row>
+
+				<b-row v-if="noResults">
+					<b-col sm="6">
+						Sorry, but no results were found. I blame Apple.
+					</b-col>
+				</b-row>
+
+			</b-container>
+		</div>
+		<script type="text/javascript">
+			Vue.filter('formatDate', function(d) {
+				if(!window.Intl) return d;
+				return new Intl.DateTimeFormat('en-US').format(new Date(d));
+			}); 
+
+			const app = new Vue({
+				el:'#app',
+				data:{
+					results:[],
+					noResults:false,
+					searching:false,
+					audio:null
+				},
+				delimiters: ['[[',']]'],
+				methods:{
+					search:function() {
+						if(this.audio) {
+							this.audio.pause();
+							this.audio.currentTime = 0;
+						}
+						this.results = [];
+						this.searching = true;
+						fetch("https://itunes.apple.com/search?term={{ artist.name }})}&limit=2&media=music")
+						.then(res => res.json())
+						.then(res => {
+							this.searching = false;
+							this.results = res.results;
+							this.noResults = this.results.length === 0;
+						});
+					},
+					play:function(s) {
+						if(this.audio && this.audio.currentTime !=0) {
+							this.audio.pause();
+							this.audio.currentTime = 0;
+							if(this.audio.src!=s) {
+								this.audio = new Audio(s);
+								this.audio.play();
+							}
+						} else {
+						this.audio = new Audio(s);
+						this.audio.play();
+						}
+					}
+				},
+				created: function() {
+					this.search()
+				}
+			});
+		</script>
 	</div>
 </div>
 <section>
