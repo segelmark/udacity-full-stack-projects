@@ -114,8 +114,6 @@ def search_venues():
       "count": len(data),
       "data": data
     }
-    cities = Venue.query.distinct(Venue.city).all()
-    states = Venue.query.distinct(Venue.state).all()
     return render_template('pages/search_venues.html', results=response, search_term=request.form.get('search_term', ''))
   except:
     flash('An error occurred while searching')
@@ -480,7 +478,7 @@ def create_shows():
   for artist in artists: form.artist_id.choices.append((artist.id, artist.name))
   return render_template('forms/new_show.html', form=form)
 
-@app.route('/shows/create/<int:venue_id>')
+@app.route('/shows/create/at_venue/<int:venue_id>')
 def create_shows_at_venue(venue_id):
   # Renders form
   form = ShowForm()
@@ -488,6 +486,16 @@ def create_shows_at_venue(venue_id):
   form.venue_id.choices.append((venue.id, venue.name))
   artists = Artist.query.all()
   for artist in artists: form.artist_id.choices.append((artist.id, artist.name))
+  return render_template('forms/new_show.html', form=form)
+
+@app.route('/shows/create/with_artist/<int:artist_id>')
+def create_shows_with_artist(artist_id):
+  # Renders form
+  form = ShowForm()
+  artist = Artist.query.filter_by(id=artist_id).all()[0]
+  form.artist_id.choices.append((artist.id, artist.name))
+  venues = Venue.query.filter_by(seeking_talent=True).all()
+  for venue in venues: form.venue_id.choices.append((venue.id, venue.name))
   return render_template('forms/new_show.html', form=form)
 
 @app.route('/shows/create', methods=['POST'])
