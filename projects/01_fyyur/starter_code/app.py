@@ -73,7 +73,7 @@ def venues():
     areas = Venue.query.distinct(Venue.city, Venue.state).all()
 
     for location in areas:
-      venuesQuery = Venue.query.filter_by(city=location.city)
+      venuesQuery = Venue.query.filter_by(city=location.city).filter_by(state=location.state)
       #venuesQuery = Venue.query.all()
 
       venues = []
@@ -173,17 +173,22 @@ def create_venue_submission():
   try:
     # get form data and create 
     form = VenueForm()
-    venue = Venue(name=form.name.data, city=form.city.data, state=form.state.data, address=form.address.data,
-                  phone=form.phone.data, image_link=form.image_link.data,genres=form.genres.data, 
-                  facebook_link=form.facebook_link.data, seeking_description=form.seeking_description.data,
-                  website=form.website.data, seeking_talent=form.seeking_talent.data)
+    if request.method == 'POST' and form.validate():
+      venue = Venue(name=form.name.data, city=form.city.data, state=form.state.data, address=form.address.data,
+                    phone=form.phone.data, image_link=form.image_link.data,genres=form.genres.data, 
+                    facebook_link=form.facebook_link.data, seeking_description=form.seeking_description.data,
+                    website=form.website.data, seeking_talent=form.seeking_talent.data)
     
-    # commit session to database
-    db.session.add(venue)
-    db.session.commit()
+      # commit session to database
+      db.session.add(venue)
+      db.session.commit()
 
-    # flash success 
-    flash('Venue ' + request.form['name'] + ' was successfully listed!')
+      # flash success
+      flash('Venue ' + request.form['name'] + ' was successfully listed!')
+    else:
+      errorMessage="Errors in the following fields: "
+      for error in form.errors: errorMessage+=error+" "
+      flash(errorMessage)
   except:
     # catches errors
     db.session.rollback()
@@ -324,26 +329,31 @@ def edit_artist(artist_id):
 @app.route('/artists/<int:artist_id>/edit', methods=['POST'])
 def edit_artist_submission(artist_id):
   try:
-    artist = Artist.query.filter_by(id=artist_id).all()[0]
     form = ArtistForm()
 
-    artist.name=form.name.data
-    artist.city=form.city.data
-    artist.state=form.state.data
-    artist.phone=form.phone.data
-    artist.genres=form.genres.data
-    artist.facebook_link=form.facebook_link.data
-    artist.seeking_description=form.seeking_description.data
-    artist.image_link=form.image_link.data
-    artist.seeking_venue=form.seeking_venue.data
-    
-    # commit session to database
-    db.session.add(artist)
-    db.session.commit()
-    # called upon submitting the new artist listing form
+    if request.method == 'POST' and form.validate():
+      artist = Artist.query.filter_by(id=artist_id).all()[0]
+      artist.name=form.name.data
+      artist.city=form.city.data
+      artist.state=form.state.data
+      artist.phone=form.phone.data
+      artist.genres=form.genres.data
+      artist.facebook_link=form.facebook_link.data
+      artist.seeking_description=form.seeking_description.data
+      artist.image_link=form.image_link.data
+      artist.seeking_venue=form.seeking_venue.data
 
-    # on successful db insert, flash success
-    flash('Artist ' + request.form['name'] + ' was successfully updated!')
+      # commit session to database
+      db.session.add(artist)
+      db.session.commit()
+
+      # on successful db insert, flash success
+      flash('Artist ' + request.form['name'] + ' was successfully updated!')
+
+    else:
+      errorMessage="An error occurred. Errors in the following fields: "
+      for error in form.errors: errorMessage+=error+" "
+      flash(errorMessage)
 
   except:
     # catches errors
@@ -382,27 +392,33 @@ def edit_venue(venue_id):
 @app.route('/venues/<int:venue_id>/edit', methods=['POST'])
 def edit_venue_submission(venue_id):
   try:
-    venue = Venue.query.filter_by(id=venue_id).all()[0]
     form = VenueForm()
 
-    venue.name=form.name.data
-    venue.city=form.city.data
-    venue.state=form.state.data
-    venue.phone=form.phone.data
-    venue.genres=form.genres.data
-    venue.facebook_link=form.facebook_link.data
-    venue.seeking_description=form.seeking_description.data
-    venue.image_link=form.image_link.data
-    venue.seeking_venue=form.seeking_talent.data
-    
-    # commit session to database
-    db.session.add(venue)
-    db.session.commit()
-    # called upon submitting the new venue listing form
+    if request.method == 'POST' and form.validate():
 
-    # on successful db insert, flash success
-    flash('Venue ' + request.form['name'] + ' was successfully updated!')
+      venue = Venue.query.filter_by(id=venue_id).all()[0]
 
+      venue.name=form.name.data
+      venue.city=form.city.data
+      venue.state=form.state.data
+      venue.phone=form.phone.data
+      venue.genres=form.genres.data
+      venue.facebook_link=form.facebook_link.data
+      venue.seeking_description=form.seeking_description.data
+      venue.image_link=form.image_link.data
+      venue.seeking_venue=form.seeking_talent.data
+      
+      # commit session to database
+      db.session.add(venue)
+      db.session.commit()
+      # called upon submitting the new venue listing form
+
+      # on successful db insert, flash success
+      flash('Venue ' + request.form['name'] + ' was successfully updated!')
+    else:
+      errorMessage="An error occurred. Errors in the following fields: "
+      for error in form.errors: errorMessage+=error+" "
+      flash(errorMessage)
   except:
     # catches errors
     db.session.rollback()
@@ -425,19 +441,23 @@ def create_artist_form():
 def create_artist_submission():
   try:
     form = ArtistForm()
+    if request.method == 'POST' and form.validate():
 
-    artist = Artist(name=form.name.data, city=form.city.data, state=form.state.data,
-    phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data,
-    seeking_description=form.seeking_description.data, image_link=form.image_link.data, seeking_venue=form.seeking_venue.data)
-    
-    # commit session to database
-    db.session.add(artist)
-    db.session.commit()
-    # called upon submitting the new artist listing form
+      artist = Artist(name=form.name.data, city=form.city.data, state=form.state.data,
+      phone=form.phone.data, genres=form.genres.data, facebook_link=form.facebook_link.data,
+      seeking_description=form.seeking_description.data, image_link=form.image_link.data, seeking_venue=form.seeking_venue.data)
+      
+      # commit session to database
+      db.session.add(artist)
+      db.session.commit()
+      # called upon submitting the new artist listing form
 
-    # on successful db insert, flash success
-    flash('Artist ' + request.form['name'] + ' was successfully listed!')
-
+      # on successful db insert, flash success
+      flash('Artist ' + request.form['name'] + ' was successfully listed!')
+    else:
+      errorMessage="Errors in the following fields: "
+      for error in form.errors: errorMessage+=error+" "
+      flash(errorMessage)
   except:
     # catches errors
     db.session.rollback()
