@@ -201,6 +201,7 @@ def create_venue_submission():
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
   try:
+    Show.query.filter_by(venue_id=venue_id).delete()
     Venue.query.filter_by(id=venue_id).delete()
     db.session.commit()
     flash('Successfully deleted the venue')
@@ -290,6 +291,7 @@ def show_artist(artist_id):
 @app.route('/artists/<artist_id>', methods=['DELETE'])
 def delete_artist(artist_id):
   try:
+    Show.query.filter_by(artist_id=artist_id).delete()
     Artist.query.filter_by(id=artist_id).delete()
     db.session.commit()
     flash('Successfully deleted the artist')
@@ -406,7 +408,7 @@ def edit_venue_submission(venue_id):
       venue.facebook_link=form.facebook_link.data
       venue.seeking_description=form.seeking_description.data
       venue.image_link=form.image_link.data
-      venue.seeking_venue=form.seeking_talent.data
+      venue.seeking_talent=form.seeking_talent.data
       
       # commit session to database
       db.session.add(venue)
