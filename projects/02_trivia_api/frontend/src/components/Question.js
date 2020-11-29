@@ -14,17 +14,17 @@ class Question extends Component {
   }
 
   render() {
-    const { key, question, answer, category, difficulty } = this.props;
+    const { question, answer, category, difficulty } = this.props;
     return (
       <div className="Question-holder">
         <div className="flashcard">
           <label>
-            <section onClick={() => this.flipVisibility()} class="front" style={{"height": this.state.visibleAnswer ? '0' : '100%'}}>
+            <section onClick={() => this.flipVisibility()} className="front" style={{"height": this.state.visibleAnswer ? '0' : '100%'}}>
               <div className="Question-status">
-                <div>&nbsp;<img className="category" src={`${category}.svg`}/></div>
+                <div>&nbsp;<img className="category" alt="{category}" src={`${category}.svg`}/></div>
                 <div className="difficulty">Difficulty: {difficulty}</div>
                 <div>
-                  <img src="delete.png" className="delete" onClick={() => this.props.questionAction('DELETE')}/>
+                  <img src="delete.png" className="delete" alt="Delete {category}" onClick={() => this.props.questionAction('DELETE')}/>
                   &nbsp;
                 </div>
               </div>
@@ -38,22 +38,6 @@ class Question extends Component {
           </label>
         </div>
       </div>
-      // <div className="Question-holder">
-      //   <div className="Question">{question}</div>
-      //   <div className="Question-status">
-      //     <img className="category" src={`${category}.svg`}/>
-      //     <div className="difficulty">Difficulty: {difficulty}</div>
-      //     <img src="delete.png" className="delete" onClick={() => this.props.questionAction('DELETE')}/>
-          
-      //   </div>
-      //   <div className="show-answer button"
-      //       onClick={() => this.flipVisibility()}>
-      //       {this.state.visibleAnswer ? 'Hide' : 'Show'} Answer
-      //     </div>
-      //   <div className="answer-holder">
-      //     <span style={{"visibility": this.state.visibleAnswer ? 'visible' : 'hidden'}}>Answer: {answer}</span>
-      //   </div>
-      // </div>
     );
   }
 }

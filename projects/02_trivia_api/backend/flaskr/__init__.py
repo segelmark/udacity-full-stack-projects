@@ -56,7 +56,6 @@ def create_app(test_config=None):
   @app.route('/questions')
   def retrieve_questions():
     questions = Question.query.order_by(Question.id).all()
-    current_questions = paginate_questions(request, questions)
     categories = Category.query.order_by(Category.id).all()
 
     if len(questions) == 0:
@@ -64,9 +63,9 @@ def create_app(test_config=None):
 
     return jsonify({
       'success': True,
-      'questions': current_questions,
+      'questions': paginate_questions(request, questions),
       'categories': format_categories(categories),
-      'total_questions': len(current_questions),
+      'total_questions': len(questions),
       'current_category': None
     })
 
@@ -83,20 +82,32 @@ def create_app(test_config=None):
       'deleted': question_id
     })
 
+  #Endpoint to POST a new question, 
+  @app.route('/questions', methods=['POST'])
+  def create_question():
+    body = request.get_json()
 
-  '''
-  @TODO: 
-  Create an endpoint to POST a new question, 
-  which will require the question and answer text, 
-  category, and difficulty score.
+    if not ('question' in body and 'answer' in body and 'difficulty' in body and 'category' in body):
+      abort(422)
 
-  TEST: When you submit a question on the "Add" tab, 
-  the form will clear and the question will appear at the end of the last page
-  of the questions list in the "List" tab.  
-  '''
+    new_question = body.get('question', None)
+    new_answer = body.get('answer', None)
+    new_difficulty = body.get('difficulty', None)
+    new_category = body.get('category', None)
+
+    try:
+      question = Question(question=new_question, answer=new_answer,
+                          difficulty=new_difficulty, category=new_category)
+      question.insert()
+      return jsonify({
+        'success': True,
+        'created': question.id,
+      })
+    except:
+      abort(422)        
 
   #Endpoint to get questions based on a search term. 
-  @app.route('/questions', methods=['POST'])
+  @app.route('/questions/search', methods=['POST'])
   def search_questions():
     body = request.get_json()
     search_term = body.get('searchTerm', None)
@@ -121,7 +132,6 @@ def create_app(test_config=None):
     questions = Question.query.filter_by(
       category=category_id
       ).order_by(Question.id).all()
-    current_questions = paginate_questions(request, questions)
     categories = Category.query.order_by(Category.type).all()
 
     if len(questions) == 0:
@@ -129,23 +139,12 @@ def create_app(test_config=None):
 
     return jsonify({
       'success': True,
-      'questions': current_questions,
-      'categories': [category.format() for category in categories],
-      'total_questions': len(current_questions),
+      'questions': paginate_questions(request, questions),
+      'categories': format_categories(categories),
+      'total_questions': len(questions),
       'current_category': category_id
     })
 
-  '''
-  @TODO: 
-  Create a POST endpoint to get questions to play the quiz. 
-  This endpoint should take category and previous question parameters 
-  and return a random questions within the given category, 
-  if provided, and that is not one of the previous questions. 
-
-  TEST: In the "Play" tab, after a user selects "All" or a category,
-  one question at a time is displayed, the user is allowed to answer
-  and shown whether they were correct or not. 
-  '''
   #POST endpoint to get questions to play the quiz
   @app.route('/quizzes', methods=['POST'])
   def play_quiz():
