@@ -80,7 +80,7 @@ class QuizView extends Component {
   submitGuess = (event) => {
     event.preventDefault();
     const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
-    let evaluate =  this.evaluateAnswer()
+    let evaluate =  this.evaluateAnswer(formatGuess, this.state.currentQuestion.answer)
     this.setState({
       numCorrect: !evaluate ? this.state.numCorrect : this.state.numCorrect + 1,
       showAnswer: true,
@@ -128,20 +128,26 @@ class QuizView extends Component {
     )
   }
 
-  evaluateAnswer = () => {
-    const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
-    const answerArray = this.state.currentQuestion.answer.toLowerCase().split(' ');
-    return answerArray.includes(formatGuess)
+  evaluateAnswer = (guess, answer) => {
+    const formatGuess = guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
+    const formatAnswer = answer.toLowerCase();
+    const answerArray = answer.toLowerCase().split(' ');
+    console.log(guess+answer);
+    if(answerArray.includes(formatGuess) || formatAnswer==formatGuess) {
+      return true
+    } else {
+      return false
+    }
   }
 
   renderCorrectAnswer(){
     const formatGuess = this.state.guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
-    let evaluate =  this.evaluateAnswer()
+    let evaluate =  this.evaluateAnswer(this.state.guess, this.state.currentQuestion.answer)
     return(
       <div className="quiz-play-holder">
         <div className="quiz-question">{this.state.currentQuestion.question}</div>
         <div className={`${evaluate ? 'correct' : 'wrong'}`}>{evaluate ? "You were correct!" : "You were incorrect"}</div>
-        <div className="quiz-answer">{this.state.currentQuestion.answer}</div>
+        <div className="quiz-answer">{this.state.currentQuestion.answer} - {this.state.guess}</div>
         <button className="next-question button" onClick={this.getNextQuestion}> Next Question </button>
       </div>
     )
