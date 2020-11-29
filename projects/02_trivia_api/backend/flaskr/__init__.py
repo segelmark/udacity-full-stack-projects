@@ -58,7 +58,7 @@ def create_app(test_config=None):
     questions = Question.query.order_by(Question.id).all()
     categories = Category.query.order_by(Category.id).all()
 
-    if len(questions) == 0:
+    if not questions:
       abort(404)
 
     return jsonify({
