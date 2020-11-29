@@ -11,7 +11,7 @@ class FormView extends Component {
       answer: "",
       difficulty: 1,
       category: 1,
-      categories: {}
+      categories: []
     }
   }
 
@@ -69,15 +69,13 @@ class FormView extends Component {
         <h2>Add a New Trivia Question</h2>
         <form className="form-view" id="add-question-form" onSubmit={this.submitQuestion}>
           <label>
-            Question
-            <input type="text" name="question" onChange={this.handleChange}/>
+            <input type="text" placeholder="Question" name="question" onChange={this.handleChange}/>
           </label>
           <label>
-            Answer
-            <input type="text" name="answer" onChange={this.handleChange}/>
+            <input type="text" placeholder="Answer" name="answer" onChange={this.handleChange}/>
           </label>
           <label>
-            Difficulty
+            Difficulty<br/>
             <select name="difficulty" onChange={this.handleChange}>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -87,16 +85,14 @@ class FormView extends Component {
             </select>
           </label>
           <label>
-            Category
+            Category<br/>
             <select name="category" onChange={this.handleChange}>
-              {Object.keys(this.state.categories).map(id => {
-                  return (
-                    <option key={id} value={id}>{this.state.categories[id]}</option>
-                  )
-                })}
+              {this.state.categories.map((category) => 
+                    <option key={category.id} value={category.id}>{category.type}</option>
+                )}
             </select>
           </label>
-          <input type="submit" className="button" value="Submit" />
+          <button type="submit" className="button">Submit</button>
         </form>
       </div>
     );

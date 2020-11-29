@@ -20,12 +20,14 @@
 }
 
 .button {
-    width: 100px;
+    width: 150px;
     margin-top: 5px;
-    background-color: dodgerblue;
+    background-color: green;
+    border-radius: 25px;
     color: white;
-    padding: 3px 5px;
+    padding: 10px;
     align-self: center;
+    height: 40px;
 }
 
 div.button {
@@ -44,4 +46,21 @@ div.button {
 
 .wrong {
     color: red;
+}
+
+input {
+    align-self: center;
+}
+
+button {
+    border:0;
+}
+
+.quiz-answer {
+    margin-top:10px;
+    margin-bottom: 30px;
+}
+
+.play-again {
+    margin-top:60px;
 }

@@ -5,8 +5,10 @@
   justify-content: space-between;
   height: 75px;
   padding: 20px;
-  padding-right: 40%;
-  padding-left: 5%;
+  padding-right: 25%;
+  padding-left: 25%;
+  margin:auto;
+  text-align: center;
 }
 
 .App-header > h1 {
