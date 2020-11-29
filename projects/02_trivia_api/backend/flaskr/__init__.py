@@ -8,8 +8,9 @@ from models import setup_db, Question, Category
 
 ENTRIES_PER_PAGE=10
 
-#Formats categories correctly
+
 def format_categories(categories):
+  """Formats categories correctly"""
   return [category.format() for category in categories]
 
 #paginates all entries returning the right page for a certain entries per page
