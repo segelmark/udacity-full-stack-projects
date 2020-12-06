@@ -2,7 +2,7 @@
 
 The Full Stack Trivia is offered to you as a RESTful API running on a Python based FLASK server.
 
-Follow below instruction or head down to the (API documentation)[#api-documentation] to see what this powerful Trivia API is capable of.
+Follow below instruction or head down to the [API documentation](#api-documentation) to see what this powerful Trivia API is capable of.
 
 ## Getting Started
 
