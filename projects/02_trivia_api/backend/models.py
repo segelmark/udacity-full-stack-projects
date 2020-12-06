@@ -1,6 +1,7 @@
 import os
 from sqlalchemy import Column, String, Integer, create_engine
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import json
 
 database_name = "trivia"
@@ -17,7 +18,7 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
+    migrate = Migrate(app, db)
 
 '''
 Question
@@ -75,4 +76,25 @@ class Category(db.Model):
     return {
       'id': self.id,
       'type': self.type
+    }
+  
+'''
+Category
+
+'''
+class Highscore(db.Model):  
+  __tablename__ = 'highscore'
+
+  id = Column(Integer, primary_key=True)
+  name = Column(String)
+  score = Column(Integer)
+
+  def __init__(self, type):
+    self.type = type
+
+  def format(self):
+    return {
+      'id': self.id,
+      'name': self.name,
+      'score': self.score
     }

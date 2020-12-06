@@ -4,29 +4,30 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import random
 
+
 from models import setup_db, Question, Category
 
 ENTRIES_PER_PAGE=10
 
-#Formats categories correctly
 def format_entities(entities):
+  """Formats categories correctly"""
   return [entity.format() for entity in entities]
 
-#paginates all entries returning the right page for a certain entries per page
 def paginate(entries,page,entries_per_page):
+  """Paginates all entries returning the right page for a certain entries per page """
   start =  (page - 1) * entries_per_page
   end = start + entries_per_page
   return entries[start:end]
 
-#paginates a selecation for the right number of pages given by the get request argument
 def paginate_questions(request, selection):
+  """paginates a selecation for the right number of pages given by the get request argument """
   page = request.args.get('page', 1, type=int)
   entries = format_entities(selection)
   return paginate(entries,page,ENTRIES_PER_PAGE)
 
 
 def create_app(test_config=None):
-  # create and configure the app
+  """ Create and configure the app """
   app = Flask(__name__)
   setup_db(app)
   
@@ -39,16 +40,16 @@ def create_app(test_config=None):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
-  #Endpoint to handle GET requests for all available categories
   @app.route('/categories')
   def retrieve_categories():
+    """Endpoint to handle GET requests for all available categories"""
     try:
       categories = Category.query.order_by(Category.id).all()
     except:
       abort(422)
     
     #Make sure we got some categories
-    if len(categories) == 0:
+    if not categories:
       abort(404)
 
     #Return the categories
@@ -58,18 +59,18 @@ def create_app(test_config=None):
     })
 
 
-  #Endpoint to handle GET requests for all questions paginated (10 questions)
   @app.route('/questions')
   def retrieve_questions():
+    """ Endpoint to handle GET requests for all questions paginated (10 questions) """
     try:
       questions = Question.query.order_by(Question.id).all()
       categories = Category.query.order_by(Category.id).all()
     except:
       abort(422)
     
-    #Paginate list of questions and make sure it is a valid page
+    # Paginate list of questions and make sure it is a valid page
     questions_paginated = paginate_questions(request, questions)
-    if len(questions_paginated) == 0:
+    if not questions_paginated:
       abort(404)
 
     return jsonify({
@@ -81,9 +82,9 @@ def create_app(test_config=None):
     })
 
 
-  #Endpoint to DELETE question using a question ID. 
   @app.route('/questions/<int:question_id>', methods=['DELETE'])
   def delete_question(question_id):
+    """ Endpoint to DELETE question using a question ID. """
     try:
       question = Question.query.get(question_id)
     except:
@@ -101,11 +102,13 @@ def create_app(test_config=None):
     })
 
 
-  #Endpoint to POST a new question, 
   @app.route('/questions', methods=['POST'])
   def create_question():
+    """ Endpoint to POST a new question """
+
     body = request.get_json()
 
+    # Check that we are getting the required fields
     if not ('question' in body and 'answer' in body and 'difficulty' in body and 'category' in body):
       abort(422)
 
@@ -125,9 +128,9 @@ def create_app(test_config=None):
     except:
       abort(422)        
 
-  #Endpoint to get questions based on a search term. 
   @app.route('/questions/search', methods=['POST'])
   def search_questions():
+    """ Endpoint to get questions based on a search term. """
     try:
       body = request.get_json()
       search_term = body.get('searchTerm', None)
@@ -148,16 +151,16 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-  # Endpoint to handle GET requests for questions in a certain category
   @app.route('/categories/<int:category_id>/questions')
   def retrieve_questions_by_category(category_id):
+    """ Endpoint to handle GET requests for questions in a certain category """
     try:
       questions = Question.query.filter_by(
         category=category_id
         ).order_by(Question.id).all()
       categories = Category.query.order_by(Category.type).all()
 
-      if len(questions) == 0:
+      if not questions:
         abort(404)
 
       return jsonify({
@@ -170,9 +173,9 @@ def create_app(test_config=None):
     except:
       abort(422)
 
-  #POST endpoint to get questions to play the quiz
   @app.route('/quizzes', methods=['POST'])
   def play_quiz():
+    """ Endpoint to get questions to play the quiz """
     try:
       body = request.get_json()
       if not ('quiz_category' in body and 'previous_questions' in body):
