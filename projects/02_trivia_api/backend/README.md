@@ -69,14 +69,40 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
 ```
-{'1' : "Science",
-'2' : "Art",
-'3' : "Geography",
-'4' : "History",
-'5' : "Entertainment",
-'6' : "Sports"}
+{
+  "categories": [
+    {
+      "id": 1, 
+      "type": "Science"
+    }, 
+    {
+      "id": 2, 
+      "type": "Art"
+    }, 
+    ...
+  ], 
+  "success": true
+}
 ```
 
+### Get '/questions'
+- Fetches a list of questions for all categories paginated with 10 questions per page
+- Request Arguments: Page number
+| Parameter | Type | Description |
+| :--- | :--- | :--- |
+| `page` | `int` | **Required**. Your Gophish API key |
+- Returns: An object 
+
+## Status Codes
+
+Trivia API returns the following status codes in its API:
+
+| Status Code | Description |
+| :--- | :--- |
+| 200 | `Success` |
+| 400 | `Bad Request` |
+| 404 | `Resource Not Found` |
+| 422 | `Unprocessable Entity` |
 
 ## Testing
 To run the tests, run
