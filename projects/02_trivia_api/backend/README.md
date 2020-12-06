@@ -141,7 +141,27 @@ This describes the resources that make up the official Full Stack Trivia API, wh
 ```
 
 ### POST '/questions/'
+- Creates a new question
+- Request Arguments:
+  - Body: JSON Object containing "question": String, 'answer': String, 'difficulty': 1-5, 'category': category_id
 
+Example request body:
+```
+{
+    'question': 'What is the best basketball player of all time?',
+    'answer': 'Michael Jordan',
+    'difficulty': 1
+    'category': '4'
+}
+```
+
+- Returns: Object with 'created': question_id
+```
+{
+  'success': True,
+  'deleted': question_id
+}
+```
 
 ### DELETE '/questions/{question_id}'
 - Deletes question with question_id from database
