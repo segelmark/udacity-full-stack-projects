@@ -133,6 +133,16 @@ Trivia API returns the following status codes in its API:
 | 404 | `Resource Not Found` |
 | 422 | `Unprocessable Entity` |
 
+For all status codes a JSON object is included with a "success": Boolean and the correct data or error code and message.
+
+```
+{
+  "error": 404, 
+  "message": "Resource Not Found", 
+  "success": false
+}
+```
+
 ## Testing
 To run the tests, run
 ```
