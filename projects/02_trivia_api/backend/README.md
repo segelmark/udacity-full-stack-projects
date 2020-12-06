@@ -85,9 +85,10 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 }
 ```
 
-### Get '/questions?page='
+### Get '/questions?page={page_number}'
 - Fetches a list of questions for all categories paginated with 10 questions per page
-- Request Arguments: Page number (optional - defaults to page = 1)
+- Request Arguments:
+  - Query string params: Page number (optional - defaults to page = 1)
 - Returns: An object with keys "categories" (same as above), "current_category": null, "total questions": Int, and "questions" containing an array of objects with keys "answer", "category": String, "difficulty": Int, "id": Int, "question": String
 ```
 {
