@@ -58,7 +58,7 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 
 ## Endpoints
 * GET '/categories'
-* GET '/questions'
+* GET '/questions?page='
 * POST '/questions'
 * DELETE '/questions/question_id'
 * POST '/questions/search'
@@ -67,7 +67,7 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 ### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+- Returns: An object with key "categories" containing an array of objects with key "id": Int and "type": String 
 ```
 {
   "categories": [
@@ -85,13 +85,42 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 }
 ```
 
-### Get '/questions'
+### Get '/questions?page='
 - Fetches a list of questions for all categories paginated with 10 questions per page
-- Request Arguments: Page number
-| Parameter | Type | Description |
-| :--- | :--- | :--- |
-| `page` | `int` | **Required**. Your Gophish API key |
-- Returns: An object 
+- Request Arguments: Page number (optional - defaults to page = 1)
+- Returns: An object with keys "categories" (same as above), "current_category": null, "total questions": Int, and "questions" containing an array of objects with keys "answer", "category": String, "difficulty": Int, "id": Int, "question": String
+```
+{
+  "categories": [
+    {
+      "id": 1, 
+      "type": "Science"
+    }, 
+    ...
+  ], 
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    ...
+  ], 
+  "success": true, 
+  "total_questions": 19
+}
+```
+
 
 ## Status Codes
 
