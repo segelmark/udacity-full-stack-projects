@@ -1,5 +1,9 @@
 # Full Stack Trivia API Backend
 
+The Full Stack Trivia is offered to you as a RESTful API running on a Python based FLASK server.
+
+Follow below instruction or head down to the (API documentation)[#api-documentation] to see what this powerful Trivia API is capable of.
+
 ## Getting Started
 
 ### Installing Dependencies
@@ -56,13 +60,27 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
+## Testing
+To run the tests, run
+```
+dropdb trivia_test
+createdb trivia_test
+psql trivia_test < trivia.psql
+python test_flaskr.py
+```
+
+# API Documentation
+
+This describes the resources that make up the official Full Stack Trivia API, which allows for easy integration of the trivia functionality into any web or mobile application.
+
 ## Endpoints
 * GET '/categories'
-* GET '/questions?page='
+* GET '/questions?page={page_number}'
 * POST '/questions'
-* DELETE '/questions/question_id'
+* DELETE '/questions/{question_id}'
 * POST '/questions/search'
-
+* GET '/categories/{category_id}/questions'
+* POST '/quizzes'
 
 ### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
@@ -88,7 +106,7 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 ### Get '/questions?page={page_number}'
 - Fetches a list of questions for all categories paginated with 10 questions per page
 - Request Arguments:
-  - Query string params: Page number (optional - defaults to page = 1)
+  - Query string params: Page number as Integer (optional - defaults to page = 1)
 - Returns: An object with keys "categories" (same as above), "current_category": null, "total questions": Int, and "questions" containing an array of objects with keys "answer", "category": String, "difficulty": Int, "id": Int, "question": String
 ```
 {
@@ -122,6 +140,21 @@ Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` d
 }
 ```
 
+### POST '/questions/'
+
+
+### DELETE '/questions/{question_id}'
+- Deletes question with question_id from database
+- Request Arguments:
+  - URL Params: Question ID as Integer
+- Returns: Object with 'deleted': question_id
+```
+{
+  'success': True,
+  'deleted': question_id
+}
+```
+
 
 ## Status Codes
 
@@ -142,13 +175,4 @@ For all status codes a JSON object is included with a "success": Boolean and the
   "message": "Resource Not Found", 
   "success": false
 }
-```
-
-## Testing
-To run the tests, run
-```
-dropdb trivia_test
-createdb trivia_test
-psql trivia_test < trivia.psql
-python test_flaskr.py
 ```
