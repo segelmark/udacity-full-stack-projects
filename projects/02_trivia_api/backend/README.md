@@ -57,14 +57,14 @@ Setting the `FLASK_ENV` variable to `development` will detect file changes and r
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
 ## Endpoints
-GET '/categories'
-GET '/questions'
-POST '/questions'
-DELETE '/questions/question_id'
-POST '/questions/search'
+* GET '/categories'
+* GET '/questions'
+* POST '/questions'
+* DELETE '/questions/question_id'
+* POST '/questions/search'
 
 
-GET '/categories'
+### GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
