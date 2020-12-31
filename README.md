@@ -3,3 +3,16 @@ The goal of the Full Stack Web Developer Nanodegree program is to equip learners
 
 ## Projects
 The projects folder contains the four projects I completed during this course.
+
+#### [Project 1 -  SQL and Data Modeling for the Web](projects/01_fyyur)
+Project to practice building models and model interactions to be able to store retrieve, and update data from a database.
+
+Tecnologies used:
+* virtualenv as a tool to create isolated Python environments
+* SQLAlchemy ORM as ORM library of choice
+* PostgreSQL the database of choice
+* Python3 and Flask as our server language and server framework
+* Flask-Migrate for database migration
+
+#### [Project 2 -  Full Stack Trivia API](projects/02_trivia_api)
+Project to practice structuring, planning, implementing, and testing an API.
