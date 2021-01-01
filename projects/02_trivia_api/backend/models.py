@@ -78,23 +78,3 @@ class Category(db.Model):
       'type': self.type
     }
   
-'''
-Category
-
-'''
-class Highscore(db.Model):  
-  __tablename__ = 'highscore'
-
-  id = Column(Integer, primary_key=True)
-  name = Column(String)
-  score = Column(Integer)
-
-  def __init__(self, type):
-    self.type = type
-
-  def format(self):
-    return {
-      'id': self.id,
-      'name': self.name,
-      'score': self.score
-    }

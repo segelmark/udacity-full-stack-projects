@@ -154,24 +154,19 @@ def create_app(test_config=None):
   @app.route('/categories/<int:category_id>/questions')
   def retrieve_questions_by_category(category_id):
     """ Endpoint to handle GET requests for questions in a certain category """
-    try:
-      questions = Question.query.filter_by(
-        category=category_id
-        ).order_by(Question.id).all()
-      categories = Category.query.order_by(Category.type).all()
+    questions = Question.query.filter_by(category=str(category_id)).order_by(Question.id).all()
+    categories = Category.query.order_by(Category.type).all()
 
-      if not questions:
-        abort(404)
+    if not questions:
+      abort(404)
 
-      return jsonify({
-        'success': True,
-        'questions': paginate_questions(request, questions),
-        'categories': format_entities(categories),
-        'total_questions': len(questions),
-        'current_category': category_id
-      })
-    except:
-      abort(422)
+    return jsonify({
+      'success': True,
+      'questions': paginate_questions(request, questions),
+      'categories': format_entities(categories),
+      'total_questions': len(questions),
+      'current_category': category_id
+    })
 
   @app.route('/quizzes', methods=['POST'])
   def play_quiz():

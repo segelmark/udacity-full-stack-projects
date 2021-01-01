@@ -143,23 +143,21 @@ This describes the resources that make up the official Full Stack Trivia API, wh
 ### POST '/questions/'
 - Creates a new question
 - Request Arguments:
-  - Body: JSON Object containing "question": String, 'answer': String, 'difficulty': 1-5, 'category': category_id
-
-Example request body:
+  - Body: JSON Object containing "question": String, "answer": String, "difficulty": 1-5, "category": category_id
 ```
 {
-    'question': 'What is the best basketball player of all time?',
-    'answer': 'Michael Jordan',
-    'difficulty': 1
-    'category': '4'
+    "question": "What is the best basketball player of all time?",
+    "answer": "Michael Jordan",
+    "difficulty": 1
+    "category": "4"
 }
 ```
 
-- Returns: Object with 'created': question_id
+- Returns: Object with "created": question_id
 ```
 {
-  'success': True,
-  'deleted': question_id
+  "success": True,
+  "deleted": question_id
 }
 ```
 
@@ -170,11 +168,85 @@ Example request body:
 - Returns: Object with 'deleted': question_id
 ```
 {
-  'success': True,
-  'deleted': question_id
+  "success": True,
+  "deleted": question_id
 }
 ```
 
+### POST '/questions/search'
+- Fetches a list of questions for a given search term among all categories paginated with 10 questions per page
+- Request Arguments:
+  - Query string params: Page number as Integer (optional - defaults to page = 1)
+  - Body: JSON object with "search_tern": String
+```
+{
+  "search_term": "Apollo 13",
+}
+```
+- Returns: An object with keys "current_category": null, "total questions": Int, and "questions" containing an array of objects with keys "answer", "category": String, "difficulty": Int, "id": Int, "question": String
+```
+{
+  "success": true, 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    ...
+  ], 
+  "total_questions": 19
+  "current_category": null, 
+}
+```
+
+### GET '/categories/{category_id}/questions'
+- Fetches a list of all questions for a particular category
+- Request Arguments:
+  - Query string params: Category id as Integer
+- Returns: An object with keys "categories" (same as above), "current_category": null, "total questions": Int, and "questions" containing an array of objects with keys "answer", "category": String, "difficulty": Int, "id": Int, "question": String
+```
+{
+  "categories": [
+    {
+      "id": 1, 
+      "type": "Science"
+    }, 
+    ...
+  ], 
+  "current_category": null, 
+  "questions": [
+    {
+      "answer": "Apollo 13", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": "5", 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    ...
+  ], 
+  "success": true, 
+  "total_questions": 19
+}
+```
+
+### POST '/quizzes'
 
 ## Status Codes
 
