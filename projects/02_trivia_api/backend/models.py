@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import json
 
-database_name = "trivia_test"
+database_name = "trivia"
 database_path = "postgres://{}/{}".format('localhost:5432', database_name)
 
 db = SQLAlchemy()

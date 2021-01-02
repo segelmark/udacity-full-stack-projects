@@ -180,7 +180,7 @@ This describes the resources that make up the official Full Stack Trivia API, wh
   - Body: JSON object with "search_tern": String
 ```
 {
-  "search_term": "Apollo 13",
+  "search_term": "Tom Hanks",
 }
 ```
 - Returns: An object with keys "current_category": null, "total questions": Int, and "questions" containing an array of objects with keys "answer", "category": Int, "difficulty": Int, "id": Int, "question": String

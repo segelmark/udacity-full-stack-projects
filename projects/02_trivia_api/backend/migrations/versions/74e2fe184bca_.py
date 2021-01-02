@@ -23,12 +23,6 @@ def upgrade():
     sa.Column('type', sa.String(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
-    op.create_table('highscore',
-    sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(), nullable=True),
-    sa.Column('score', sa.Integer(), nullable=True),
-    sa.PrimaryKeyConstraint('id')
-    )
     op.create_table('questions',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('question', sa.String(), nullable=True),

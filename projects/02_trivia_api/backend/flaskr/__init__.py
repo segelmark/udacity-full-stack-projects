@@ -149,7 +149,7 @@ def create_app(test_config=None):
         'current_category': None
       })
     except:
-      abort(422)
+      abort(404)
 
   @app.route('/categories/<int:category_id>/questions')
   def retrieve_questions_by_category(category_id):
@@ -177,7 +177,7 @@ def create_app(test_config=None):
         abort(422)
       category = body.get('quiz_category')
       previous_questions = body.get('previous_questions')
-      if str(category['id']).isnumeric() and category['id']!=0:
+      if str(category['id']).isnumeric() and str(category['id'])!='0':
         new_question = Question.query.filter_by(
           category=(int(category['id']))
         ).filter(Question.id.notin_((previous_questions))).all()
