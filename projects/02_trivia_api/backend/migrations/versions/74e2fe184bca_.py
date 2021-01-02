@@ -33,7 +33,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('question', sa.String(), nullable=True),
     sa.Column('answer', sa.String(), nullable=True),
-    sa.Column('category', sa.String(), nullable=True),
+    sa.Column('category', sa.Integer(), nullable=True),
     sa.Column('difficulty', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )

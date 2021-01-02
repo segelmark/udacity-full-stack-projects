@@ -43,8 +43,8 @@ class TriviaTestCase(unittest.TestCase):
     Tests
     """
 
-    # Test that we get a response when trying to get categories
     def test_get_categories_success(self):
+        """Test that we get a response when trying to get categories"""
         res = self.client().get('/categories')
         data = json.loads(res.data)
 
@@ -67,6 +67,7 @@ class TriviaTestCase(unittest.TestCase):
         # Check data
         self.assertTrue(data['total_questions'])
         self.assertTrue(len(data['questions'])<=10)
+        self.assertTrue(len(data['questions'])<=data['total_questions'])
         self.assertTrue(len(data['categories']))
 
     # Test what happens if we try to look for a page that is out of range
@@ -126,6 +127,14 @@ class TriviaTestCase(unittest.TestCase):
         question = Question.query.filter(Question.id == 1).one_or_none()
         self.assertEqual(question, None)
 
+    def test_create_question_fields_missing(self):
+        res = self.client().get('/questions?page=9999')
+        data = json.loads(res.data)
+
+        #Check for lack of success with correct error code and message
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'Resource Not Found')
 
     
 

@@ -177,22 +177,21 @@ def create_app(test_config=None):
         abort(422)
       category = body.get('quiz_category')
       previous_questions = body.get('previous_questions')
-
-      if category['type'] == 'click':
-        new_question = Question.query.filter(
-          Question.id.notin_((previous_questions))
-        ).all()
-      else:
+      if str(category['id']).isnumeric() and category['id']!=0:
         new_question = Question.query.filter_by(
           category=(int(category['id']))
         ).filter(Question.id.notin_((previous_questions))).all()
-
-      return jsonify({
-        'success': True,
-        'question': random.choice(new_question).format() if new_question else None,
-      })
+      else:
+        new_question = Question.query.filter(
+          Question.id.notin_((previous_questions))
+        ).all()
     except:
       abort(422)
+
+    return jsonify({
+      'success': True,
+      'question': random.choice(new_question).format() if new_question else None,
+    })
   
   #Error handlers for all expected errors 
 

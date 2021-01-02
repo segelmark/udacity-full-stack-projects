@@ -247,6 +247,29 @@ This describes the resources that make up the official Full Stack Trivia API, wh
 ```
 
 ### POST '/quizzes'
+- Fetches question to play the quiz
+- Request Arguments:
+  - Query string params: Page number as Integer (optional - defaults to page = 1)
+  - Body: JSON object with "previous_questions": Array of Integers, "quiz_category": JSON object with "type":String, "id":Integer
+```
+{
+  "previous_questions":[],
+  "quiz_category":{"type":null,"id":0}
+}
+```
+- Returns: A JSON object with key "question" containing an object with "answer": String, "category": Integer, "difficulty": Integer, "id": Integer, "question": String
+```
+{
+  "question": {
+    "answer": "Uruguay", 
+    "category": 6, 
+    "difficulty": 4, 
+    "id": 11, 
+    "question": "Which country won the first ever soccer World Cup in 1930?"
+  }, 
+  "success": true
+}
+```
 
 ## Status Codes
 

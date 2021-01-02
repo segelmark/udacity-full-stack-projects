@@ -35,7 +35,7 @@ class QuizView extends Component {
     })
   }
 
-  selectCategory = (type, id=0) => {
+  selectCategory = (type=null, id=0) => {
     this.setState({quizCategory: {type, id}}, this.getNextQuestion)
   }
 
@@ -46,7 +46,6 @@ class QuizView extends Component {
   getNextQuestion = () => {
     const previousQuestions = [...this.state.previousQuestions]
     if(this.state.currentQuestion.id) { previousQuestions.push(this.state.currentQuestion.id) }
-
     $.ajax({
       url: '/quizzes', //TODO: update request URL
       type: "POST",
@@ -104,7 +103,7 @@ class QuizView extends Component {
           <div className="quiz-play-holder">
               <div className="choose-header">Choose Category</div>
               <div className="category-holder">
-                  <div className="play-category" onClick={this.selectCategory}>ALL</div>
+                  <div className="play-category" onClick={() => this.selectCategory(null,0)}>ALL</div>
                   {this.state.categories.map((category) =>
                   <div
                       key={category.id}
@@ -132,7 +131,6 @@ class QuizView extends Component {
     const formatGuess = guess.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase()
     const formatAnswer = answer.toLowerCase();
     const answerArray = answer.toLowerCase().split(' ');
-    console.log(guess+answer);
     if(answerArray.includes(formatGuess) || formatAnswer==formatGuess) {
       return true
     } else {
