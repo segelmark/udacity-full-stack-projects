@@ -1,16 +1,16 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>user-page</ion-title>
+  <ion-toolbar style="text-align: center">
+    <ion-title><img src="../../../assets/udacity-cafe-logo-alt.png" width="200"></ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="!auth.token">
+<ion-content *ngIf="!auth.token" class="ion-text-center ion-padding-top">
   <ion-button [href]="loginURL">Log In</ion-button>
 </ion-content>
-<ion-content *ngIf="auth.token">
+<ion-content *ngIf="auth.token" class="ion-text-center ion-padding-top">
   <ion-button (click)="auth.logout()">Log Out</ion-button>
-      <ion-item>
-        <ion-label>Active JWT</ion-label>
-        <ion-textarea [ngModel]="auth.token" name="Active JWT"></ion-textarea>
-      </ion-item>
+  <ion-item>
+    <ion-label>Active JWT</ion-label>
+    <ion-textarea [ngModel]="auth.token" name="Active JWT"></ion-textarea>
+  </ion-item>
 </ion-content>
