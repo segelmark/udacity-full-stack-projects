@@ -1,27 +1,26 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar class="ion-text-center">
     <ion-title *ngIf="isNew">New Drink Creator</ion-title>
     <ion-title *ngIf="!isNew">Drink Editor</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="drink">
+<ion-content *ngIf="drink" class="ion-text-center">
     <app-drink-graphic [drink]="drink"></app-drink-graphic>
 
     <form (ngSubmit)="logForm()">
       <ion-item>
-        <ion-label>Drink Title</ion-label>
-        <ion-input type="text" [(ngModel)]="drink.title" name="title"></ion-input>
+        <ion-label style="font-weight: bold;">Title:</ion-label>
+        <ion-input type="text" placeholder="Drink Title" [(ngModel)]="drink.title" name="title"></ion-input>
       </ion-item>
 
       <ion-item *ngFor="let ingredient of drink.recipe; let i = index;  trackBy: customTrackBy">
-        <ion-label>Ingredient Name</ion-label>
-        <ion-input [(ngModel)]="drink.recipe[i].name" [name]="'Ingredient Title'+i"></ion-input>
+        <ion-input [(ngModel)]="drink.recipe[i].name" placeholder="Ingredient" [name]="'Ingredient Title'+i"></ion-input>
 
-        <ion-label>Number of Parts</ion-label>
+        <ion-label style="font-weight: bold;">Parts:</ion-label>
         <ion-input type="number" [(ngModel)]="drink.recipe[i].parts" [name]="'Ingredient Parts'+i"></ion-input>
 
-        <ion-label>Color</ion-label>
+        <ion-label style="font-weight: bold;">Color:</ion-label>
         <ion-input type="text" [(ngModel)]="drink.recipe[i].color" [name]="'Ingredient Color'+i"></ion-input>
 
         <ion-button (click)="removeIngredient(i)" [disabled]="i==0 && drink.recipe.length==1">Remove</ion-button><br />
@@ -31,7 +30,7 @@
 
       <ion-button 
         [disabled]="!auth.can('delete:drinks')"
-        (click)="deleteClicked()">Delete</ion-button><br />
+        (click)="deleteClicked()" class="ion-margin-top">Delete</ion-button><br/><br/>
       <ion-button (click)="closeModal()">Cancel</ion-button>
       <ion-button 
         [disabled]="!auth.can('patch:drinks') || !auth.can('post:drinks')"
