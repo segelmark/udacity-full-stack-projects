@@ -42,6 +42,7 @@ class Drink(db.Model):
     # the required datatype is [{'color': string, 'name':string, 'parts':number}]
     recipe =  Column(String(180), nullable=False)
 
+
     '''
     short()
         short form representation of the Drink model
