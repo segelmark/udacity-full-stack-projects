@@ -110,10 +110,14 @@ def create_drink(payload):
 
     # Check that we are getting the required fields
     if not ('title' in body and 'recipe' in body):
-        abort(422) 
+        abort(422)
+
+    recipe = body.get('recipe', None)
+    if not isinstance(recipe, list):
+        recipe = [recipe]
 
     drink = Drink(title=body.get('title', None),
-                  recipe=json.dumps(body.get('recipe', None)))
+                  recipe=json.dumps(recipe))
     drink.insert()
     return jsonify({
         'success': True,
@@ -140,7 +144,7 @@ def update_drink(payload, drink_id):
     body = request.get_json()
 
     # Check that we are getting the required fields
-    if not ('title' in body and 'recipe' in body):
+    if not ('title' in body or 'recipe' in body):
         abort(422)
 
     try:
@@ -151,8 +155,10 @@ def update_drink(payload, drink_id):
     if not drink:
         abort(404)
 
-    drink.title = body.get('title', None)
-    drink.recipe = json.dumps(body.get('recipe', None))
+    if 'title' in body:
+        drink.title = body.get('title', None)
+    if 'recipe' in body:
+        drink.recipe = json.dumps(body.get('recipe', None))
     drink.update()
     return jsonify({
         'success': True,
@@ -190,6 +196,7 @@ def delete_question(payload, drink_id):
       'success': True,
       'deleted': drink_id
     })
+
 
 # Error Handling
 

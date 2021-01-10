@@ -6,7 +6,9 @@
 </ion-header>
 
 <ion-content *ngIf="drink" class="ion-text-center">
-    <app-drink-graphic [drink]="drink"></app-drink-graphic>
+    <div style="width:50px; margin:auto; margin-top:20px;">
+      <app-drink-graphic [drink]="drink"></app-drink-graphic> 
+    </div>
 
     <form (ngSubmit)="logForm()">
       <ion-item>
