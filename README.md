@@ -19,3 +19,6 @@ Project to practice structuring, planning, implementing, and testing an API.
 
 #### [Project 3 - Authentication & Authorization Coffee Shop Menu](projects/03_coffee_shop_full_stack)
 Project to practice authentication and authorization (with Roles Based Authentication using JWT and Auth0).
+
+#### [Project 4 - Deploying a Flask API to AWS](../FSND-Deploy-Flask-App-to-Kubernetes-Using-EKS)
+Project to practice containerizing and deploying a Flask API to a Kubernetes cluster using Docker, AWS EKS, CodePipeline, and CodeBuild.
