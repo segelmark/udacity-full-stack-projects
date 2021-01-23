@@ -16,3 +16,6 @@ Tecnologies used:
 
 #### [Project 2 -  Full Stack Trivia API](projects/02_trivia_api)
 Project to practice structuring, planning, implementing, and testing an API.
+
+#### [Project 3 - Authentication & Authorization Coffee Shop Menu](projects/03_coffee_shop_full_stack)
+Project to practice authentication and authorization (with Roles Based Authentication using JWT and Auth0).
